@@ -1,0 +1,9 @@
+<div class="pt5pl5">
+  <!-- <p class="h4">Welcome to Vedanta Vidiyalay Application. We are happy to release beta version for our application.</p>
+  <p class="h5"> for any enquiry of demo please contact: <b><u>vikas.on@gmail.com</u></b></p>
+  <p>
+    looking forward for your queries and support thank you.
+  </p> -->
+  <button *ngIf="!isAuthenticated" class="btn btn-success" (click)="oktaAuth.loginRedirect()">Login</button>
+  <button *ngIf="isAuthenticated" class="btn btn-danger" (click)="oktaAuth.logout()">Logout</button>
+</div>

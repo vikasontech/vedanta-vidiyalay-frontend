@@ -1,0 +1,440 @@
+<!--
+  ~     Copyright (C) 2019  Vikas Kumar Verma
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<div *ngIf="!searched">
+  <form [formGroup]="getStudentDetailsForm" novalidate (ngSubmit)="onSearch()">
+    <mat-card class="shipping-card">
+
+      <mat-card-header>
+        <p class="h3">Search Student Information</p>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Enrolment No." formControlName="enrolmentNo" model="enrolmentNo">
+              <mat-error *ngIf="getStudentDetailsForm.controls['enrolmentNo'].hasError('required')">
+                Enrolment number is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">Search</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
+<div *ngIf="searched">
+  <form [formGroup]="newAdmissionForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="shipping-card">
+      <mat-card-header>
+        <mat-card-title>
+          <p class="h3">Update Student Information</p>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+          <h4>Addmission Details</h4>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Enrolment No" [disabled]=true formControlName="idDisabled"
+                model="studentAdmissionFormData.id">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Date of Admission" type="date" formControlName="dateOfAdmission"
+                model="studentAdmissionFormData.dateOfAdmission">
+              <mat-error *ngIf="newAdmissionForm.controls['dateOfBirth'].hasError('required')">
+                Date of Admission is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="w-50">
+              <input matInput placeholder="Admission Status" formControlName="admissionStatusDisabled"
+                model="studentAdmissionFormData.admissionStatus">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <h4>Personal Details</h4>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Student name" formControlName="name" model="studentAdmissionFormData.name">
+              <mat-error *ngIf="newAdmissionForm.controls['name'].hasError('required')">
+                Student name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>        
+            <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Date of Birth" type="date" formControlName="dateOfBirth"
+                model="studentAdmissionFormData.dateOfBirth">
+              <mat-error *ngIf="newAdmissionForm.controls['dateOfBirth'].hasError('required')">
+                Date of Birth is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Religion" formControlName="religion"
+                model="studentAdmissionFormData.religion">
+              <mat-error *ngIf="newAdmissionForm.controls['religion'].hasError('required')">
+                Religion is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Caste" formControlName="caste" model="studentAdmissionFormData.caste">
+              <mat-error *ngIf="newAdmissionForm.controls['caste'].hasError('required')">
+                Caste is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Sub caste" formControlName="subcaste"
+                model="studentAdmissionFormData.subcaste">
+              <mat-error *ngIf="newAdmissionForm.controls['subcaste'].hasError('required')">
+                Sub caster is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="*Gender" formControlName="gender" model="studentAdmissionFormData.gender">
+                <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                  {{gender.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="newAdmissionForm.controls['gender'].hasError('required')">
+                Gender is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Father Name" formControlName="fatherName"
+                model="studentAdmissionFormData.fatherName">
+              <mat-error *ngIf="newAdmissionForm.controls['fatherName'].hasError('required')">
+                Father Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Mother Name" formControlName="motherName"
+                model="studentAdmissionFormData.motherName">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Occupation" formControlName="occupation"
+                model="studentAdmissionFormData.occupation">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="relation" formControlName="relation"
+                model="studentAdmissionFormData.relation">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <h4>Contact Details</h4>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Address1" formControlName="address1"
+                model="studentAdmissionFormData.address1">
+              <mat-error *ngIf="newAdmissionForm.controls['address1'].hasError('required')">
+                Address1 is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+
+            <mat-form-field class="full-width">
+              <input matInput #pin1 maxlength="6" placeholder="*Pin1" formControlName="pin1"
+                model="studentAdmissionFormData.pin1">
+              <mat-hint align="end">{{pin1.value.length}} / 6</mat-hint>
+              <mat-error *ngIf="newAdmissionForm.controls['pin1'].hasError('required')">
+                Pin1 is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="newAdmissionForm.controls['pin1'].dirty">
+                Pin1 is <strong>invalid format</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Address2" formControlName="address2"
+                model="studentAdmissionFormData.address2">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput #pin2 maxlength="6" placeholder="Pin2" formControlName="pin2"
+                model="studentAdmissionFormData.pin2">
+              <mat-hint align="end">{{pin2.value.length}} / 6</mat-hint>
+              <mat-error *ngIf="newAdmissionForm.controls['pin2'].dirty">
+                Pin2 is <strong>invalid format</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput #phone1 maxlength="10" placeholder="Phone 1" type="tel" formControlName="phone1"
+                model="studentAdmissionFormData.phone1">
+              <mat-hint align="end">{{phone1.value.length}} / 10</mat-hint>
+              <mat-error *ngIf="newAdmissionForm.controls['phone1'].dirty">
+                Phone1 is <strong>invalid format</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput #phone2 maxlength="10" placeholder="Phone 2" type="tel" formControlName="phone2"
+                model="studentAdmissionFormData.phone2">
+              <mat-hint align="end">{{phone2.value.length}} / 10</mat-hint>
+              <mat-error *ngIf="newAdmissionForm.controls['phone2'].dirty">
+                Phone2 is <strong>invalid format</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput #mobile maxlength="11" placeholder="*Mobile" formControlName="mobile"
+                model="studentAdmissionFormData.mobile">
+              <mat-hint align="end">{{mobile.value.length}} / 11</mat-hint>
+              <mat-error *ngIf="newAdmissionForm.controls['mobile'].hasError('required')">
+                Mobile is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Email" formControlName="email" type="email"
+                model="studentAdmissionFormData.email">
+              <mat-error *ngIf="newAdmissionForm.controls['email'].dirty">
+                Email in <strong>invalid format</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Blood Group" formControlName="bloodGroup"
+                model="studentAdmissionFormData.bloodGroup">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Chechak" formControlName="chechak" model="studentAdmissionFormData.chechak">
+                <mat-option *ngFor="let option of options" [value]="option.value">
+                  {{option.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Nationality" formControlName="nationality"
+                model="studentAdmissionFormData.nationality">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Mother Toungue" formControlName="motherTongue"
+                model="studentAdmissionFormData.motherTongue">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Area of interest" formControlName="areaOfInterest"
+                model="studentAdmissionFormData.areaOfInterest">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <h4>Educational Details</h4>>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Last School Name" formControlName="lastSchoolName"
+                model="studentAdmissionFormData.lastSchoolName">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Rank" type="number" formControlName="lastRank"
+                model="studentAdmissionFormData.lastRank">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Class Year" type="number" formControlName="lastClassYear"
+                model="studentAdmissionFormData.lastClassYear">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Last Class" type="number" formControlName="lastClass"
+                model="studentAdmissionFormData.lastClass">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Board" formControlName="board" model="studentAdmissionFormData.board">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Scorred" type="number" formControlName="scored"
+                model="studentAdmissionFormData.scored">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Total Marks" type="number" formControlName="totalMarks"
+                model="studentAdmissionFormData.totalMarks">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Reason for leave" type="string" formControlName="reasonForLeave"
+                model="studentAdmissionFormData.reasonForLeave">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="*Transfer Certificate" formControlName="transferCertificate"
+                model="studentAdmissionFormData.transferCertificate">
+                <mat-option *ngFor="let option of options" [value]="option.value">
+                  {{option.viewValue}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error *ngIf="newAdmissionForm.controls['transferCertificate'].hasError('required')">
+                Transfer Certificate details <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Mark Sheets" formControlName="lastSchoolMarkSheet"
+                model="studentAdmissionFormData.lastSchoolMarkSheet">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Behaviour" formControlName="conduct"
+                model="studentAdmissionFormData.conduct">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <h4>Admission Details</h4>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Admission CLass" type="number" formControlName="admissionClassDisabled"
+                model="studentAdmissionFormData.admissionClass">
+              <mat-error *ngIf="newAdmissionForm.controls['admissionClass'].hasError('required')">
+                Admission CLass is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Last class" type="number" formControlName="currentClass"
+                model="studentAdmissionFormData.currentClass">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="*Instrument No" formControlName="instrumentNo"
+                model="studentAdmissionFormData.instrumentNo">
+              <mat-error *ngIf="newAdmissionForm.controls['instrumentNo'].hasError('required')">
+                Instrument NO is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">Update</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

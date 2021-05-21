@@ -1,0 +1,90 @@
+<!--
+  ~     Copyright (C) 2019  Vikas Kumar Verma
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>
+        <p class="h3">Create fee master</p>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Standard" type="number" formControlName="standard"
+              model="updateFormModel.standard">
+            <mat-error *ngIf="updateForm.controls['standard'].hasError('required')">
+              Standard is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Year" type="number" formControlName="year" model="updateFormModel.year">
+            <mat-error *ngIf="updateForm.controls['year'].hasError('required')">
+              Year is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Amount" type="number" formControlName="amount" model="updateFormModel.amount">
+            <mat-error *ngIf="updateForm.controls['amount'].hasError('required')">
+              Amount is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Description" formControlName="description" model="updateFormModel.description">
+          </mat-form-field>
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="w-50">
+            <mat-select placeholder="Active" formControlName="isActive" model="updateFormModel.isActive">
+              <mat-option *ngFor="let option of options" [value]="option.value">
+                {{option.viewValue}}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="updateForm.controls['isActive'].hasError('required')">
+              Active information <strong>required</strong>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+      </div>
+
+
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

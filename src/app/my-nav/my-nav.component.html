@@ -1,0 +1,109 @@
+<!--
+  ~     Copyright (C) 2019  Vikas Kumar Verma
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar class="alert alert-success"> Vedanta Vidiyalay (v0.01)</mat-toolbar>
+    <div *ngIf=isAuthenticated>
+    <mat-toolbar class="alert alert-success">Menu</mat-toolbar>
+    <span *ngIf=userDetails>Welcome <b>{{userDetails.email}}</b></span>
+    </div>
+    <mat-nav-list>
+      <mat-accordion>
+        <div *ngIf=isAuthenticated>
+          <div *ngIf=isUserRole>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="nav-caption">Students</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf=isAdminRole>
+                <a mat-list-item routerLink="/new-admission-form">
+                  <span class="nav-caption">New Admission Form</span>
+                </a>
+              </div>
+              <a mat-list-item routerLink="/search-student-data">
+                <span class="nav-caption">Search student details</span></a>
+              <a mat-list-item routerLink="/udpate-student-data">
+                <span class="nav-caption">Update student details</span></a>
+              <a mat-list-item routerLink="/update-student-admission-status">
+                <span class="nav-caption">Update Student Admission Status</span></a>
+            </mat-expansion-panel>
+          </div>
+
+          <div *ngIf=isAdminRole>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="nav-caption">Accounts</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <a mat-list-item routerLink="/set-fee-master">
+                <span class="nav-caption">Create fee master</span></a>
+              <a mat-list-item routerLink="/query-fee-master-data"><span class="nav-caption">Search fee
+                  master</span></a>
+              <a mat-list-item routerLink="/create-student-account"><span class="nav-caption">Create fee
+                  account</span></a>
+              <a mat-list-item routerLink="/query-due-fee-data"><span class="nav-caption">Search fee due</span></a>
+              <a mat-list-item routerLink="/fee-deposit-form"><span class="nav-caption">Fee Deposit</span></a>
+              <a mat-list-item routerLink="/fee-due-recalculate"><span class="nav-caption">Fee Due
+                  Recalculate</span></a>
+
+            </mat-expansion-panel>
+          </div>
+          <div *ngIf=isAdminRole>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="nav-caption">Fine/Panelies</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <a mat-list-item routerLink="/create-fine-master"><span class="nav-caption">Create New Fine
+                  Master</span></a>
+              <a mat-list-item routerLink="/create-fine-record"><span class="nav-caption">Create New Fine
+                  Record</span></a>
+              <a mat-list-item routerLink="/query-fine-record"><span class="nav-caption">Search Fine Record</span></a>
+              <a mat-list-item routerLink="/deposit-fine-record"><span class="nav-caption">Deposit Fine
+                  record</span></a>
+            </mat-expansion-panel>
+          </div>
+        </div>
+        <app-home></app-home>
+      </mat-accordion>
+    </mat-nav-list>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <mat-toolbar color="primary">
+      <!-- <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"> -->
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span style="padding: inherit">Vedanta Vidiyalay</span>
+
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

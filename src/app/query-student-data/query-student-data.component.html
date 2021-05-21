@@ -1,0 +1,278 @@
+<!--
+  ~     Copyright (C) 2019  Vikas Kumar Verma
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<form [formGroup]="studentForm" novalidate (ngSubmit)="onSearch()">
+  <mat-card class="vedanta-card">
+
+    <mat-card-header>
+      <mat-card-title>
+        <p class="h3">Search Student Information</p>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Enrolment No" type="number" formControlName="id"
+              model="studentAdmissionFormDataModel.id">
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Standard" formControlName="standard"
+              model="studentAdmissionFormDataModel.standard">
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Year" formControlName="year" model="studentAdmissionFormDataModel.year">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Name" formControlName="name" model="studentAdmissionFormDataModel.name">
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Father Name" formControlName="fatherName"
+              model="studentAdmissionFormDataModel.fatherName">
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="motherName" formControlName="motherName"
+              model="studentAdmissionFormDataModel.motherName">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Search</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+<mat-card class="vedanta-card">
+  <mat-card-content>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+    </mat-form-field>
+    <div style="overflow-x:auto">
+      <!-- <div class="table-striped table-striped table-responsive-sm overflow-y:auto;"> -->
+      <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+
+        <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>No</th>
+          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id" sticky>
+          <th mat-header-cell *matHeaderCellDef>Enrolment No</th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.admissionStatus !=='TERMINATED'">
+              <a (click)="editStudentDetail(element.id)"><u>{{element.name}}</u></a>
+            </div>
+            <div *ngIf="element.admissionStatus==='TERMINATED'">
+              {{element.name}}
+            </div>
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="dateOfBirth">
+          <th mat-header-cell *matHeaderCellDef>Date of Birth</th>
+          <td mat-cell *matCellDef="let element"> {{element.dateOfBirth | date :'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateOfAdmission">
+          <th mat-header-cell *matHeaderCellDef>Date of Admission</th>
+          <td mat-cell *matCellDef="let element"> {{element.dateOfAdmission |  date :'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="religion">
+          <th mat-header-cell *matHeaderCellDef>Religion</th>
+          <td mat-cell *matCellDef="let element"> {{element.religion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="caste">
+          <th mat-header-cell *matHeaderCellDef>Caste</th>
+          <td mat-cell *matCellDef="let element"> {{element.caste}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="subcaste">
+          <th mat-header-cell *matHeaderCellDef>Sub caste</th>
+          <td mat-cell *matCellDef="let element"> {{element.subcaste}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef>Gender</th>
+          <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fatherName">
+          <th mat-header-cell *matHeaderCellDef>Father Name</th>
+          <td mat-cell *matCellDef="let element"> {{element.fatherName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="motherName">
+          <th mat-header-cell *matHeaderCellDef>Mother Name</th>
+          <td mat-cell *matCellDef="let element"> {{element.motherName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="occupation">
+          <th mat-header-cell *matHeaderCellDef>Occupation</th>
+          <td mat-cell *matCellDef="let element"> {{element.occupation}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="relation">
+          <th mat-header-cell *matHeaderCellDef>Relation</th>
+          <td mat-cell *matCellDef="let element"> {{element.relation}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="address1">
+          <th mat-header-cell *matHeaderCellDef>Address 1</th>
+          <td mat-cell *matCellDef="let element"> {{element.address1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="pin1">
+          <th mat-header-cell *matHeaderCellDef>Pin1</th>
+          <td mat-cell *matCellDef="let element"> {{element.pin1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="address2">
+          <th mat-header-cell *matHeaderCellDef>Address 2</th>
+          <td mat-cell *matCellDef="let element"> {{element.address2}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="pin2">
+          <th mat-header-cell *matHeaderCellDef>Pin2</th>
+          <td mat-cell *matCellDef="let element"> {{element.pin2}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone1">
+          <th mat-header-cell *matHeaderCellDef>Phone1</th>
+          <td mat-cell *matCellDef="let element"> {{element.phone1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone2">
+          <th mat-header-cell *matHeaderCellDef>Phone2</th>
+          <td mat-cell *matCellDef="let element"> {{element.phone2}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="mobile">
+          <th mat-header-cell *matHeaderCellDef>Mobile</th>
+          <td mat-cell *matCellDef="let element"> {{element.mobile}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bloodGroup">
+          <th mat-header-cell *matHeaderCellDef>Blood Group</th>
+          <td mat-cell *matCellDef="let element"> {{element.bloodGroup}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numberOfSiblings">
+          <th mat-header-cell *matHeaderCellDef>Siblings</th>
+          <td mat-cell *matCellDef="let element"> {{element.numberOfSiblings}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="admissionClass">
+          <th mat-header-cell *matHeaderCellDef>Admission Clsss</th>
+          <td mat-cell *matCellDef="let element"> {{element.admissionClass}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isFeeDue">
+          <th mat-header-cell *matHeaderCellDef>Fee Due</th>
+          <td mat-cell *matCellDef="let element"> {{element.isFeeDue}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="instrumentNo">
+          <th mat-header-cell *matHeaderCellDef>Instrument NO</th>
+          <td mat-cell *matCellDef="let element"> {{element.instrumentNo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="admissionStatus">
+          <th mat-header-cell *matHeaderCellDef>Admission Status</th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.admissionStatus!=='TERMINATED'">
+              <a (click)="updateAdmissionStatus(element.id, element.admissionStatus)">
+                <u>
+                  {{element.admissionStatus}} ...
+                </u>
+              </a>
+            </div>
+            <div *ngIf="element.admissionStatus=='TERMINATED'">
+              {{element.admissionStatus}}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateOfTermination">
+          <th mat-header-cell *matHeaderCellDef>Date of termination</th>
+          <td mat-cell *matCellDef="let element"> {{element.dateOfTermination |  date :'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="reasonForLeave">
+          <th mat-header-cell *matHeaderCellDef>Reason for leave</th>
+          <td mat-cell *matCellDef="let element"> {{element.reasonForLeave}} </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="termiate">
+          <th mat-header-cell *matHeaderCellDef>Terminate</th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.admissionStatus!='TERMINATED'">
+              <a (click)="termiateStudent(element.id,element.name,element.fatherName,element.admissionClass)">
+                <u>
+                  Terminate ...
+                </u>
+              </a>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="report">
+          <th mat-header-cell *matHeaderCellDef>Schooler Report</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button (click)="printSchollerReport(element.id)">print schooler report</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>
